@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.self.activity.MainActivity">
+
+    <TextView
+        android:id="@+id/tv_title_main"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="#5500ff00"
+        android:gravity="center"
+        android:text="主界面"
+        android:textSize="24sp" />
+
+    <com.self.view.FocusedTextView
+        android:id="@+id/ftv_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="少年听雨阁楼上，红烛昏罗帐。中年听雨客舟中，江阔云低，断雁叫西风。而今听雨僧庐下，鬓已星星也。悲欢离合总无情，一任阶前，点滴到天明。"
+        android:textColor="@android:color/black" />
+
+
+    <GridView
+        android:id="@+id/gv_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:listSelector="@drawable/item_gv_selector"
+        android:numColumns="3"
+        android:verticalSpacing="10dp"></GridView>
+</LinearLayout>
