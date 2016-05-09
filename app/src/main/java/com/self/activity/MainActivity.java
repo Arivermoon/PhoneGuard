@@ -15,6 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.self.utils.Md5Utils;
+import com.self.utils.SharedPreferencesUtils;
+
 public class MainActivity extends AppCompatActivity {
 
     private GridView gridView;
@@ -45,7 +48,12 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        showDialog4PsdSetting();
+                        String savedPsd = SharedPreferencesUtils.getString(getApplicationContext(), "password", "password");
+                        if (TextUtils.isEmpty(savedPsd)){
+                            showSettingDialog();
+                        }else {
+
+                        }
                         break;
                     default:
                         break;
@@ -54,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showDialog4PsdSetting() {
+    private void showSettingDialog() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View view = View.inflate(getApplicationContext(), R.layout.dialog_setting_psd, null);
         builder.setView(view);
@@ -65,12 +73,14 @@ public class MainActivity extends AppCompatActivity {
         Button cancelBtn = (Button) view.findViewById(R.id.btn_cancel);
 
         setBtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 EditText et_psd1 = (EditText) view.findViewById(R.id.et_dialog_psd1);
                 EditText et_psd2 = (EditText) view.findViewById(R.id.et_dialog_psd2);
                 String psd1 = et_psd1.getText().toString();
                 String psd2 = et_psd2.getText().toString();
+
                 if (TextUtils.isEmpty(psd1) || TextUtils.isEmpty(psd2)) {
                     Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_SHORT).show();
                     return;
@@ -79,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 } else {
                     //保存密码
+                    SharedPreferencesUtils.putString(getApplicationContext(), "password", "password", Md5Utils.md5(psd1));
                     dialog.dismiss();
                 }
 
