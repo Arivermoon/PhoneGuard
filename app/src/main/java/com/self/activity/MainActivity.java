@@ -1,9 +1,11 @@
 package com.self.activity;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,8 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.self.utils.Constant;
 import com.self.utils.Md5Utils;
-import com.self.utils.SharedPreferencesUtils;
+import com.self.utils.SpUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private String names[] = {"手机防盗", "通讯卫士", "软件管家",
             "进程管理", "流量统计", "病毒查杀",
             "缓存清理", "高级工具", "设置中心"};
+
+    private long startTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +53,58 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        String savedPsd = SharedPreferencesUtils.getString(getApplicationContext(), "password", "password");
-                        if (TextUtils.isEmpty(savedPsd)){
+                        String savedPsd = SpUtils.getString(getApplicationContext(), Constant.PASSWORD);
+                        if (TextUtils.isEmpty(savedPsd)) {
                             showSettingDialog();
-                        }else {
-
+                        } else {
+                            showEnterDialog();
                         }
                         break;
                     default:
                         break;
                 }
+            }
+        });
+    }
+
+    private void showEnterDialog() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View view = View.inflate(getApplicationContext(), R.layout.dialog_enter_psd, null);
+        builder.setView(view);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+
+        Button setBtn = (Button) view.findViewById(R.id.btn_set);
+        Button cancelBtn = (Button) view.findViewById(R.id.btn_cancel);
+
+        setBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                EditText et_psd1 = (EditText) view.findViewById(R.id.et_dialog_psd1);
+                String psd1 = et_psd1.getText().toString().trim();
+
+                if (TextUtils.isEmpty(psd1)) {
+                    Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    //验证密码
+                    String password = SpUtils.getString(getApplicationContext(), Constant.PASSWORD);
+                    if (Md5Utils.md5(psd1).equals(password)) {
+                        dialog.dismiss();
+                        Intent intent = new Intent(MainActivity.this, Setup1Activity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "输入密码不正确", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
     }
@@ -78,8 +125,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText et_psd1 = (EditText) view.findViewById(R.id.et_dialog_psd1);
                 EditText et_psd2 = (EditText) view.findViewById(R.id.et_dialog_psd2);
-                String psd1 = et_psd1.getText().toString();
-                String psd2 = et_psd2.getText().toString();
+                String psd1 = et_psd1.getText().toString().trim();
+                String psd2 = et_psd2.getText().toString().trim();
 
                 if (TextUtils.isEmpty(psd1) || TextUtils.isEmpty(psd2)) {
                     Toast.makeText(getApplicationContext(), "密码不能为空", Toast.LENGTH_SHORT).show();
@@ -89,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 } else {
                     //保存密码
-                    SharedPreferencesUtils.putString(getApplicationContext(), "password", "password", Md5Utils.md5(psd1));
+                    SpUtils.putString(getApplicationContext(), Constant.PASSWORD, Md5Utils.md5(psd1));
                     dialog.dismiss();
                 }
 
@@ -105,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        startTime = System.currentTimeMillis();
         gridView.setAdapter(new gvAdapter());
     }
 
@@ -139,5 +187,21 @@ public class MainActivity extends AppCompatActivity {
             textView.setText(names[position]);
             return view;
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            long endTime = System.currentTimeMillis();
+            if (endTime - startTime > 2000) {
+                startTime = System.currentTimeMillis();
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

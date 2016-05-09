@@ -6,21 +6,13 @@
 
     <TextView
         style="@style/tv_titleTheme"
-        android:text="设置密码" />
+        android:text="手机防盗" />
 
     <EditText
         android:id="@+id/et_dialog_psd1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入密码..."
-        android:inputType="textPassword"
-        android:textColor="@android:color/black" />
-
-    <EditText
-        android:id="@+id/et_dialog_psd2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="请再次输入密码..."
         android:inputType="textPassword"
         android:textColor="@android:color/black" />
 

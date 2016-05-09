@@ -8,12 +8,8 @@
 
     <TextView
         android:id="@+id/tv_title_main"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:background="#5500ff00"
-        android:gravity="center"
-        android:text="主界面"
-        android:textSize="24sp" />
+        style="@style/tv_titleTheme"
+        android:text="主界面" />
 
     <com.self.view.FocusedTextView
         android:id="@+id/ftv_main"
