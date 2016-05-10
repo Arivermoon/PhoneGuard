@@ -20,11 +20,11 @@ public class ReadContactsEngine {
         Uri uri4Data = Uri.parse(ContactsContract.AUTHORITY_URI + "/data");
         List<Contact> lists = new ArrayList<>();
         Cursor cursor1 = context.getContentResolver().query(uri4Contacts, new String[]{"_id"}, null, null, null);
-        if (cursor1.moveToNext()) {
+        while (cursor1.moveToNext()) {
             Contact contact = new Contact();
             String id = cursor1.getString(0);
-            Cursor cursor2 = context.getContentResolver().query(uri4Data, new String[]{"data1", "mimetype"}, "row_contact_id = ?", new String[]{id}, null);
-            if (cursor2.moveToNext()) {
+            Cursor cursor2 = context.getContentResolver().query(uri4Data, new String[]{"data1", "mimetype"}, "raw_contact_id = ?", new String[]{id}, null);
+            while (cursor2.moveToNext()) {
                 String data = cursor2.getString(0);
                 String mimetype = cursor2.getString(1);
                 if (mimetype.equals("vnd.android.cursor.item/name")) {
@@ -33,7 +33,11 @@ public class ReadContactsEngine {
                     contact.setPhone(data);
                 }
             }
+            cursor2.close();
+            lists.add(contact);
         }
+        //关闭游标，释放资源
+        cursor1.close();
         return lists;
     }
 }

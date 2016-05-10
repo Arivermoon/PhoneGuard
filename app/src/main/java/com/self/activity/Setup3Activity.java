@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.self.domain.Contact;
 import com.self.utils.Constant;
 import com.self.utils.SpUtils;
 
@@ -29,15 +28,16 @@ public class Setup3Activity extends BaseSetupActivity {
 
     }
 
-    public void selectSafeNumber() {
-        Intent intent = new Intent(this, Contact.class);
+    public void selectSafeNumber(View v) {
+        Intent intent = new Intent(this, ContactActivity.class);
         startActivityForResult(intent, 0);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
-            editText.setText(data.getDataString());
+            String phone = data.getStringExtra(Constant.PHONE);
+            editText.setText(phone);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
