@@ -44,11 +44,12 @@ public class Setup3Activity extends BaseSetupActivity {
 
     @Override
     public void next(View v) {
-        if (TextUtils.isEmpty(SpUtils.getString(getApplicationContext(), Constant.PHONE))) {
+        String phone = editText.getText().toString().trim();
+        if (TextUtils.isEmpty(phone)) {
             Toast.makeText(getApplicationContext(), "未设置安全号码", Toast.LENGTH_SHORT).show();
             return;
         }
-        SpUtils.putString(getApplicationContext(), Constant.PHONE, editText.getText().toString().trim());
+        SpUtils.putString(getApplicationContext(), Constant.PHONE, phone);
         super.next(v);
     }
 
