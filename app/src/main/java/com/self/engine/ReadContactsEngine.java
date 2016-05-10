@@ -1,9 +1,9 @@
 package com.self.engine;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.ContactsContract;
 
 import com.self.domain.Contact;
 
@@ -16,28 +16,33 @@ import java.util.List;
 public class ReadContactsEngine {
 
     public static List<Contact> getContacts(Context context) {
-        Uri uri4Contacts = Uri.parse(ContactsContract.AUTHORITY_URI + "/contacts");
-        Uri uri4Data = Uri.parse(ContactsContract.AUTHORITY_URI + "/data");
         List<Contact> lists = new ArrayList<>();
-        Cursor cursor1 = context.getContentResolver().query(uri4Contacts, new String[]{"_id"}, null, null, null);
-        while (cursor1.moveToNext()) {
-            Contact contact = new Contact();
-            String id = cursor1.getString(0);
-            Cursor cursor2 = context.getContentResolver().query(uri4Data, new String[]{"data1", "mimetype"}, "raw_contact_id = ?", new String[]{id}, null);
-            while (cursor2.moveToNext()) {
-                String data = cursor2.getString(0);
-                String mimetype = cursor2.getString(1);
-                if (mimetype.equals("vnd.android.cursor.item/name")) {
-                    contact.setName(data);
-                } else if (mimetype.equals("vnd.android.cursor.item/phone_v2")) {
-                    contact.setPhone(data);
+        Uri uri = Uri.parse("content://com.android.contacts/contacts");
+        ContentResolver resolver = context.getContentResolver();
+        Cursor cursor = resolver.query(uri, new String[]{"_id"}, null, null, null);
+        if (cursor != null && cursor.getCount() > 0){
+            while (cursor.moveToNext()) {
+                Contact contact = new Contact();
+                int contactId = cursor.getInt(0);
+                uri = Uri.parse("content://com.android.contacts/contacts/" + contactId + "/data");
+                Cursor cursor1 = resolver.query(uri, new String[]{"mimetype", "data1"}, null, null, null);
+                if (cursor1 != null && cursor1.getCount() > 0){
+                    while (cursor1.moveToNext()) {
+                        String mimeType = cursor1.getString(0);
+                        String data1 = cursor1.getString(1);
+                        if ("vnd.android.cursor.item/name".equals(mimeType)) { //是姓名
+                            contact.setName(data1);
+                        } else if ("vnd.android.cursor.item/phone_v2".equals(mimeType)) { //手机
+                            contact.setPhone(data1);
+                        }
+                    }
+                    cursor1.close();
+                    lists.add(contact);
                 }
             }
-            cursor2.close();
-            lists.add(contact);
+            cursor.close();
         }
-        //关闭游标，释放资源
-        cursor1.close();
+
         return lists;
     }
 }
