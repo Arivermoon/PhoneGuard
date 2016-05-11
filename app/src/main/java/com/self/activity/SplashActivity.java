@@ -18,7 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.self.domain.Version;
+import com.self.domain.VersionBean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +39,7 @@ public class SplashActivity extends AppCompatActivity {
     private int versionCode;
     private TextView textView;
     private ProgressBar progressBar;
-    private Version version;
+    private VersionBean version;
     private long startTime;
 
     @Override
@@ -198,7 +198,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void convertToBean(String json) throws JSONException {
-        version = new Version();
+        version = new VersionBean();
         JSONObject object = new JSONObject(json);
         version.setVersion(object.getInt("version"));
         version.setUrl(object.getString("url"));

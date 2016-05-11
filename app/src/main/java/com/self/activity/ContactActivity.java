@@ -1,7 +1,10 @@
 package com.self.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -12,8 +15,9 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.self.domain.Contact;
+import com.self.domain.ContactBean;
 import com.self.engine.ReadContactsEngine;
 import com.self.utils.Constant;
 
@@ -24,7 +28,7 @@ public class ContactActivity extends AppCompatActivity {
 
     private ListView listView;
 
-    private List<Contact> contacts = new ArrayList<>();
+    private List<ContactBean> contacts = new ArrayList<>();
 
     private static final int LOADING = 0;
     private static final int LOADED = 1;
@@ -74,13 +78,31 @@ public class ContactActivity extends AppCompatActivity {
                 Message msg = Message.obtain();
                 msg.what = LOADING;
                 handler.sendMessage(msg);
-                contacts = ReadContactsEngine.getContacts(getApplicationContext());
-
-                msg = Message.obtain();
-                msg.what = LOADED;
-                handler.sendMessage(msg);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+                    //安卓6.0（SDK23）以上
+                    requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, 10);
+                } else {
+                    contacts = ReadContactsEngine.getContacts(getApplicationContext());
+                    msg = Message.obtain();
+                    msg.what = LOADED;
+                    handler.sendMessage(msg);
+                }
             }
         }.start();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 10) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                contacts = ReadContactsEngine.getContacts(getApplicationContext());
+                Message msg = Message.obtain();
+                msg.what = LOADED;
+                handler.sendMessage(msg);
+            } else {
+                Toast.makeText(this, "您阻止了获取联系人信息权限", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void initEvent() {
@@ -116,7 +138,7 @@ public class ContactActivity extends AppCompatActivity {
             View v = View.inflate(getApplicationContext(), R.layout.item_contact, null);
             TextView tv_name = (TextView) v.findViewById(R.id.tv_name);
             TextView tv_phone = (TextView) v.findViewById(R.id.tv_phone);
-            Contact contact = contacts.get(position);
+            ContactBean contact = contacts.get(position);
             tv_name.setText(contact.getName());
             tv_phone.setText(contact.getPhone());
 

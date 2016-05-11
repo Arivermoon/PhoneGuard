@@ -3,7 +3,7 @@ package com.self.domain;
 /**
  * Created by tanlang on 2016/5/7.
  */
-public class Version {
+public class VersionBean {
     
     private int version;
     private String url;

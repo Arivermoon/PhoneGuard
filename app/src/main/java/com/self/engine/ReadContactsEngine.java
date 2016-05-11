@@ -2,10 +2,9 @@ package com.self.engine;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 
-import com.self.domain.Contact;
+import com.self.domain.ContactBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,29 +14,19 @@ import java.util.List;
  */
 public class ReadContactsEngine {
 
-    public static List<Contact> getContacts(Context context) {
-        Uri uri4Contacts = Uri.parse(ContactsContract.AUTHORITY_URI + "/contacts");
-        Uri uri4Data = Uri.parse(ContactsContract.AUTHORITY_URI + "/data");
-        List<Contact> lists = new ArrayList<>();
-        Cursor cursor1 = context.getContentResolver().query(uri4Contacts, new String[]{"_id"}, null, null, null);
-        while (cursor1.moveToNext()) {
-            Contact contact = new Contact();
-            String id = cursor1.getString(0);
-            Cursor cursor2 = context.getContentResolver().query(uri4Data, new String[]{"data1", "mimetype"}, "raw_contact_id = ?", new String[]{id}, null);
-            while (cursor2.moveToNext()) {
-                String data = cursor2.getString(0);
-                String mimetype = cursor2.getString(1);
-                if (mimetype.equals("vnd.android.cursor.item/name")) {
-                    contact.setName(data);
-                } else if (mimetype.equals("vnd.android.cursor.item/phone_v2")) {
-                    contact.setPhone(data);
-                }
+    public static List<ContactBean> getContacts(Context context) {
+        List<ContactBean> lists = new ArrayList<>();
+        Cursor cursor = context.getContentResolver().query(Phone.CONTENT_URI, new String[]{Phone.DISPLAY_NAME, Phone.NUMBER}, null, null, Phone.SORT_KEY_PRIMARY);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                ContactBean contact = new ContactBean();
+                contact.setName(cursor.getString(0));
+                contact.setPhone(cursor.getString(1));
+                lists.add(contact);
             }
-            cursor2.close();
-            lists.add(contact);
+            cursor.close();
         }
-        //关闭游标，释放资源
-        cursor1.close();
+
         return lists;
     }
 }
