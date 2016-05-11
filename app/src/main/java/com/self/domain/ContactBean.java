@@ -3,7 +3,7 @@ package com.self.domain;
 /**
  * Created by tanlang on 2016/5/10.
  */
-public class Contact {
+public class ContactBean {
     
     private String name;
     private String phone;
