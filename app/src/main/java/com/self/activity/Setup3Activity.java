@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.self.utils.Constant;
+import com.self.utils.EncryptUtils;
 import com.self.utils.SpUtils;
 
 /**
@@ -20,7 +21,11 @@ public class Setup3Activity extends BaseSetupActivity {
     public void initView() {
         setContentView(R.layout.activity_setup3);
         editText = (EditText) findViewById(R.id.et_setup3_safenumber);
-        editText.setText(SpUtils.getString(getApplicationContext(), Constant.PHONE));
+    }
+
+    @Override
+    protected void initData() {
+        editText.setText(EncryptUtils.decrypt(SpUtils.getString(getApplicationContext(), Constant.PHONE)));
     }
 
     @Override
@@ -49,7 +54,7 @@ public class Setup3Activity extends BaseSetupActivity {
             Toast.makeText(getApplicationContext(), "未设置安全号码", Toast.LENGTH_SHORT).show();
             return;
         }
-        SpUtils.putString(getApplicationContext(), Constant.PHONE, phone);
+        SpUtils.putString(getApplicationContext(), Constant.PHONE, EncryptUtils.encrypt(phone));
         super.next(v);
     }
 
