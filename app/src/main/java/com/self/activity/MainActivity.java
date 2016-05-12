@@ -92,8 +92,13 @@ public class MainActivity extends AppCompatActivity {
                     String password = SpUtils.getString(getApplicationContext(), Constant.PASSWORD);
                     if (Md5Utils.md5(psd1).equals(password)) {
                         dialog.dismiss();
-                        Intent intent = new Intent(MainActivity.this, Setup1Activity.class);
-                        startActivity(intent);
+                        if (SpUtils.getBoolean(getApplicationContext(), Constant.CHECK)) {
+                            Intent intent = new Intent(MainActivity.this, LostFindActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(MainActivity.this, Setup1Activity.class);
+                            startActivity(intent);
+                        }
                     } else {
                         Toast.makeText(getApplicationContext(), "输入密码不正确", Toast.LENGTH_SHORT).show();
                     }

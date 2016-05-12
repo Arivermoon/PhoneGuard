@@ -24,6 +24,10 @@ public class Setup2Activity extends BaseSetupActivity {
         setContentView(R.layout.activity_setup2);
         button = (Button) findViewById(R.id.bt_setup2_bindsim);
         imageView = (ImageView) findViewById(R.id.iv_setup2_isbind);
+    }
+
+    @Override
+    protected void initData() {
         String sim = SpUtils.getString(getApplicationContext(), Constant.SIM);
         if (TextUtils.isEmpty(sim)) {
             imageView.setImageResource(R.drawable.unlock);

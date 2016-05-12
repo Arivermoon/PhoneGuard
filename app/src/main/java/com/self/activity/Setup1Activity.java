@@ -11,6 +11,11 @@ public class Setup1Activity extends BaseSetupActivity {
     }
 
     @Override
+    protected void initData() {
+
+    }
+
+    @Override
     protected void initEvent() {
 
     }

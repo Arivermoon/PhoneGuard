@@ -19,9 +19,12 @@ public abstract class BaseSetupActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        initGesture();//初始化手势操作
+        initData();
         initEvent();
+        initGesture();//初始化手势操作
     }
+
+    protected abstract void initData();
 
     protected abstract void initEvent();
 
