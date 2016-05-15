@@ -7,6 +7,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="true"
@@ -22,12 +26,29 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <activity android:name=".LostFindActivity" />
+        <activity
+            android:name=".LostFindActivity"
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".Setup1Activity" />
         <activity android:name=".Setup2Activity" />
         <activity android:name=".Setup3Activity" />
         <activity android:name=".Setup4Activity" />
-        <activity android:name=".ContactActivity"/>
+        <activity android:name=".ContactActivity" />
+        <activity
+            android:name=".SettingCenterActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".TelSafeActivity"
+            android:parentActivityName=".MainActivity" />
+
+        <service android:name="com.self.service.LostFindService" />
+
+        <receiver android:name="com.self.receiver.BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

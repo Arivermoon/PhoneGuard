@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initEvent() {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            private Intent intent;
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
@@ -59,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             showEnterDialog();
                         }
+                        break;
+                    case 1:
+                        intent = new Intent(MainActivity.this, TelSafeActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 8:
+                        intent = new Intent(MainActivity.this, SettingCenterActivity.class);
+                        startActivity(intent);
                         break;
                     default:
                         break;
@@ -92,13 +102,8 @@ public class MainActivity extends AppCompatActivity {
                     String password = SpUtils.getString(getApplicationContext(), Constant.PASSWORD);
                     if (Md5Utils.md5(psd1).equals(password)) {
                         dialog.dismiss();
-                        if (SpUtils.getBoolean(getApplicationContext(), Constant.CHECK)) {
-                            Intent intent = new Intent(MainActivity.this, LostFindActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, Setup1Activity.class);
-                            startActivity(intent);
-                        }
+                        Intent intent = new Intent(MainActivity.this, LostFindActivity.class);
+                        startActivity(intent);
                     } else {
                         Toast.makeText(getApplicationContext(), "输入密码不正确", Toast.LENGTH_SHORT).show();
                     }

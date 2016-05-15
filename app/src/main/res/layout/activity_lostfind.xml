@@ -28,10 +28,13 @@
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/tv_lostfind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:text="是否重新进入设置向导界面"
+        android:textColor="@android:color/holo_red_light"
+        android:paddingBottom="15dp"
         android:textSize="18sp" />
 
     <TextView

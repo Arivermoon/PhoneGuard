@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.self.activity.SettingCenterActivity">
+
+    <TextView
+        style="@style/tv_titleTheme"
+        android:text="设置中心" />
+
+    <com.self.view.SettingCenterItem
+        android:id="@+id/item_autoupdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mContent="自动更新已经关闭-自动更新已经打开"
+        app:mOrder="1"
+        app:mTitle="自动更新设置"></com.self.view.SettingCenterItem>
+
+    <com.self.view.SettingCenterItem
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mContent="黑名单拦截设置已经关闭-黑名单拦截设置已经打开"
+        app:mOrder="2"
+        app:mTitle="黑名单拦截设置"></com.self.view.SettingCenterItem>
+
+</LinearLayout>

@@ -9,6 +9,11 @@ public class Constant {
     public static final String SIM = "sim";
     public static final String PHONE = "phone";
     public static final int SIGN = 110;
-    public static final String CHECK = "checked";
+    public static final String SETTED = "setted";
+    public static final String AUTO_UPDATE = "autoupdate";
+    public static final String BLACKLIST = "blacklist";
+    public static final int SMS = 1;
+    public static final int TEL = 2;
+    public static final int ALL = 3;
 
 }

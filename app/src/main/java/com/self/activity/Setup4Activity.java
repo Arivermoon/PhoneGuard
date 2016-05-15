@@ -1,12 +1,13 @@
 package com.self.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Toast;
 
-import com.self.utils.Constant;
-import com.self.utils.SpUtils;
+import com.self.service.LostFindService;
+import com.self.utils.ServiceUtils;
 
 /**
  * Created by tanlang on 2016/5/9.
@@ -23,7 +24,8 @@ public class Setup4Activity extends BaseSetupActivity {
 
     @Override
     protected void initData() {
-        checkBox.setChecked(SpUtils.getBoolean(this, Constant.CHECK));
+        boolean serviceRunning = ServiceUtils.isServiceRunning(Setup4Activity.this, "com.self.service.LostFindService");
+        checkBox.setChecked(serviceRunning);
     }
 
     @Override
@@ -31,19 +33,23 @@ public class Setup4Activity extends BaseSetupActivity {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                Intent service = new Intent(Setup4Activity.this, LostFindService.class);
+                if (isChecked) {
+                    //打勾开启服务，否则停止服务
+                    startService(service);
+                } else {
+                    stopService(service);
+                }
             }
         });
     }
 
     @Override
     public void next(View v) {
-        boolean checked = checkBox.isChecked();
-        if (!checked) {
+        if (!checkBox.isChecked()) {
             Toast.makeText(this, "未开启防盗保护", Toast.LENGTH_SHORT).show();
             return;
         }
-        SpUtils.putBoolean(this, Constant.CHECK, checked);
         super.next(v);
     }
 
