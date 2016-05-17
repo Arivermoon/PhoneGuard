@@ -5,10 +5,10 @@ import com.self.engine.ReadContactsEngine;
 
 import java.util.List;
 
-public class ContactActivity extends BaseListViewActivity {
+public class CallActivity extends BaseListViewActivity {
 
     @Override
     public List<ContactBean> getDatas() {
-        return ReadContactsEngine.getContacts(this);
+        return ReadContactsEngine.getCalllog(this);
     }
 }

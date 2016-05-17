@@ -24,4 +24,18 @@ public class BlackListBean {
     public void setMode(int mode) {
         this.mode = mode;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof BlackListBean) {
+            BlackListBean bean = (BlackListBean) o;
+            return phone.equals(bean.getPhone());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return phone.hashCode();
+    }
 }

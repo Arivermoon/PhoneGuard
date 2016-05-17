@@ -2,6 +2,7 @@ package com.self.engine;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract.CommonDataKinds.Phone;
 
 import com.self.domain.ContactBean;
@@ -28,5 +29,24 @@ public class ReadContactsEngine {
         }
 
         return lists;
+    }
+
+    public static List<ContactBean> getCalllog(Context context) {
+        Uri uri = Uri.parse("content://call_log/calls");
+        Cursor cursor = context.getContentResolver().query(uri, new String[]{"number", "name"}, null, null, " _id desc");
+        List<ContactBean> lists = new ArrayList<>();
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                ContactBean bean = new ContactBean();
+                String phone = cursor.getString(0);//获取号码
+                String name = cursor.getString(1);//获取名字
+                bean.setName(name);
+                bean.setPhone(phone);
+                lists.add(bean);
+            }
+        }
+        
+        return lists;
+
     }
 }

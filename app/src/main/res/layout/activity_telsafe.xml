@@ -13,7 +13,7 @@
             android:text="通讯卫士" />
 
         <Button
-            android:id="@+id/btn_add"
+            android:id="@+id/btn_addblack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:fastScrollEnabled="true"
             android:scrollbars="vertical"
+            android:clickable="false"
             android:visibility="gone"></ListView>
 
         <TextView

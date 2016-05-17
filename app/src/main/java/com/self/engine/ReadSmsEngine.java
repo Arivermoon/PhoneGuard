@@ -9,6 +9,9 @@ import com.self.utils.Constant;
 import com.self.utils.EncryptUtils;
 import com.self.utils.SpUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by tanlang on 2016/5/10.
  */
@@ -44,5 +47,20 @@ public class ReadSmsEngine {
         }
 
         return contact;
+    }
+
+    public static List<ContactBean> getAllSms(Context context) {
+        List<ContactBean> lists = new ArrayList<>();
+        ContactBean contact = new ContactBean();
+        Cursor cursor = context.getContentResolver().query(SMS_URI, new String[]{"address"}, null, null, "date desc");
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                contact.setPhone(cursor.getString(0));
+                lists.add(contact);
+            }
+            cursor.close();
+        }
+
+        return lists;
     }
 }
