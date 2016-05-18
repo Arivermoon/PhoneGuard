@@ -33,7 +33,9 @@ public class BlackListDao {
 
     public void update(BlackListBean bean) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.execSQL("update blacklist set mode = " + bean.getMode() + " where phone = " + bean.getPhone());
+        ContentValues cv = new ContentValues();
+        cv.put("mode", bean.getMode());
+        db.update("blacklist", cv, "phone = ?", new String[]{bean.getPhone()});
         db.close();
     }
 
@@ -46,7 +48,7 @@ public class BlackListDao {
     public List<BlackListBean> findAll() {
         List<BlackListBean> lists = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query("blacklist", new String[]{"phone", "mode"}, null, null, null, null, null);
+        Cursor cursor = db.query("blacklist", new String[]{"phone", "mode"}, null, null, null, null, "phone");
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 BlackListBean bean = new BlackListBean();

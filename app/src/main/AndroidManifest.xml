@@ -35,8 +35,8 @@
         <activity android:name=".Setup3Activity" />
         <activity android:name=".Setup4Activity" />
         <activity android:name=".ContactActivity" />
-        <activity android:name=".SmsActivity" />
-        <activity android:name=".CallActivity" />
+        <activity android:name=".SmsLogActivity" />
+        <activity android:name=".CallLogActivity" />
         <activity
             android:name=".SettingCenterActivity"
             android:parentActivityName=".MainActivity" />

@@ -14,6 +14,6 @@ public class Constant {
     public static final String BLACKLIST = "blacklist";
     public static final int SMS = 1;
     public static final int TEL = 2;
-    public static final int ALL = 3;
+    public static final int ALL = SMS | TEL;
 
 }

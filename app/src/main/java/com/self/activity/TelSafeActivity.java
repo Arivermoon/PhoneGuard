@@ -142,13 +142,13 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
             case R.id.tv_popup_black_phonelog:
                 pw.dismiss();
                 pw = null;
-                intent = new Intent(this, CallActivity.class);
+                intent = new Intent(this, CallLogActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.tv_popup_black_smslog:
                 pw.dismiss();
                 pw = null;
-                intent = new Intent(this, SmsActivity.class);
+                intent = new Intent(this, SmsLogActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.bt_telsafee_add:
@@ -166,22 +166,23 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
 
                 int mode = 0;
                 if (checked4sms) {
-                    mode = Constant.SMS;
+                    mode |= Constant.SMS;
                 }
                 if (checked4phone) {
-                    mode = Constant.TEL;
-                }
-                if (checked4sms && checked4phone) {
-                    mode = Constant.ALL;
+                    mode |= Constant.TEL;
                 }
                 BlackListBean bean = new BlackListBean();
                 bean.setPhone(phone);
                 bean.setMode(mode);
-                blackListDao.save(bean);
                 if (beans.contains(bean)) {
-                    beans.remove(bean);
+                    //已经存在该号码，修改
+                    blackListDao.update(bean);
+                    beans.set(beans.indexOf(bean), bean);
+                } else {
+                    //不存在，新增
+                    blackListDao.save(bean);
+                    beans.add(bean);
                 }
-                beans.add(bean);
                 blackListAdapter.notifyDataSetChanged();
 
                 dialog.dismiss();
@@ -200,7 +201,7 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             showDialog();
-            if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
                 et_telsafe_blacknumber.setText(data.getStringExtra(Constant.PHONE));
             }
         }
@@ -293,7 +294,7 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
                 public void onClick(View v) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(TelSafeActivity.this);
                     builder.setTitle("提示").setMessage("确定要删除吗？");
-                    builder.setPositiveButton("删除", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             blackListDao.delete(bean);
