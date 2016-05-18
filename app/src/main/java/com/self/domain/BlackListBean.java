@@ -27,6 +27,7 @@ public class BlackListBean {
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o instanceof BlackListBean) {
             BlackListBean bean = (BlackListBean) o;
             return phone.equals(bean.getPhone());

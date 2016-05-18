@@ -8,7 +8,6 @@ public class ContactBean {
     private String name;
     private String phone;
     private String content;
-    private String code;
 
     public String getName() {
         return name;
@@ -34,11 +33,18 @@ public class ContactBean {
         this.content = content;
     }
 
-    public String getCode() {
-        return code;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o instanceof ContactBean) {
+            ContactBean that = (ContactBean) o;
+            return phone != null ? phone.equals(that.phone) : that.phone == null;
+        }
+        return false;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    @Override
+    public int hashCode() {
+        return phone != null ? phone.hashCode() : 0;
     }
 }

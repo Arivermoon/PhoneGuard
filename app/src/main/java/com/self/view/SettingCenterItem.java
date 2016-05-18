@@ -11,8 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.self.activity.R;
-import com.self.utils.Constant;
-import com.self.utils.SpUtils;
+import com.self.constant.Constant;
+import com.self.util.SpUtils;
 
 
 /**

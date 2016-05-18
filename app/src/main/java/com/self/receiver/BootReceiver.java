@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 
-import com.self.utils.Constant;
-import com.self.utils.EncryptUtils;
-import com.self.utils.SpUtils;
+import com.self.constant.Constant;
+import com.self.util.EncryptUtils;
+import com.self.util.SpUtils;
 
 public class BootReceiver extends BroadcastReceiver {
 

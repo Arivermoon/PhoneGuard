@@ -15,6 +15,12 @@ import java.util.List;
  */
 public class ReadContactsEngine {
 
+    /**
+     * 获取联系人
+     *
+     * @param context
+     * @return
+     */
     public static List<ContactBean> getContacts(Context context) {
         List<ContactBean> lists = new ArrayList<>();
         Cursor cursor = context.getContentResolver().query(Phone.CONTENT_URI, new String[]{Phone.DISPLAY_NAME, Phone.NUMBER}, null, null, Phone.SORT_KEY_PRIMARY);
@@ -31,9 +37,15 @@ public class ReadContactsEngine {
         return lists;
     }
 
-    public static List<ContactBean> getCalllog(Context context) {
+    /**
+     * 获取通话记录
+     *
+     * @param context
+     * @return
+     */
+    public static List<ContactBean> getCallLogs(Context context) {
         Uri uri = Uri.parse("content://call_log/calls");
-        Cursor cursor = context.getContentResolver().query(uri, new String[]{"number", "name"}, null, null, " _id desc");
+        Cursor cursor = context.getContentResolver().query(uri, new String[]{"number", "name"}, null, null, null);
         List<ContactBean> lists = new ArrayList<>();
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -45,7 +57,7 @@ public class ReadContactsEngine {
                 lists.add(bean);
             }
         }
-        
+
         return lists;
 
     }

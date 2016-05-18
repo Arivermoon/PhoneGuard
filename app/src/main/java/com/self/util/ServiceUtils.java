@@ -1,4 +1,4 @@
-package com.self.utils;
+package com.self.util;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningServiceInfo;

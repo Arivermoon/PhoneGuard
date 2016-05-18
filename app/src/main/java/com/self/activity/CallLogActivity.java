@@ -14,7 +14,7 @@ public class CallLogActivity extends BaseListViewActivity {
 
     @Override
     public List<ContactBean> getDatas() {
-        return ReadContactsEngine.getCalllog(this);
+        return ReadContactsEngine.getCallLogs(this);
     }
 
     @Override

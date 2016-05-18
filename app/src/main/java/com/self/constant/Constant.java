@@ -1,4 +1,4 @@
-package com.self.utils;
+package com.self.constant;
 
 /**
  * Created by tanlang on 2016/5/9.

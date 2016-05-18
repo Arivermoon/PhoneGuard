@@ -17,9 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.self.utils.Constant;
-import com.self.utils.Md5Utils;
-import com.self.utils.SpUtils;
+import com.self.constant.Constant;
+import com.self.util.Md5Utils;
+import com.self.util.SpUtils;
 
 public class MainActivity extends AppCompatActivity {
 

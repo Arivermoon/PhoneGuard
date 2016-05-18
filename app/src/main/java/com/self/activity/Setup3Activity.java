@@ -6,9 +6,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.self.utils.Constant;
-import com.self.utils.EncryptUtils;
-import com.self.utils.SpUtils;
+import com.self.constant.Constant;
+import com.self.util.EncryptUtils;
+import com.self.util.SpUtils;
 
 /**
  * Created by tanlang on 2016/5/9.

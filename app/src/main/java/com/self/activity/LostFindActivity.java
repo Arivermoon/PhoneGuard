@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.self.utils.Constant;
-import com.self.utils.SpUtils;
+import com.self.constant.Constant;
+import com.self.util.SpUtils;
 
 public class LostFindActivity extends AppCompatActivity {
 

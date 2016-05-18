@@ -8,8 +8,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.self.utils.Constant;
-import com.self.utils.SpUtils;
+import com.self.constant.Constant;
+import com.self.util.SpUtils;
 
 /**
  * Created by tanlang on 2016/5/9.

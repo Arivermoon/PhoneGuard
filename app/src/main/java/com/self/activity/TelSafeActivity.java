@@ -29,7 +29,7 @@ import android.widget.Toast;
 
 import com.self.dao.BlackListDao;
 import com.self.domain.BlackListBean;
-import com.self.utils.Constant;
+import com.self.constant.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
