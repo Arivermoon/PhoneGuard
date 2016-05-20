@@ -9,8 +9,10 @@ import com.self.domain.ContactBean;
 import com.self.util.EncryptUtils;
 import com.self.util.SpUtils;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by tanlang on 2016/5/10.
@@ -27,20 +29,19 @@ public class ReadSmsEngine {
      * @return
      */
     public static ContactBean getSms(Context context) {
-        ContactBean contact = new ContactBean();
+        ContactBean bean = new ContactBean();
         String phone = EncryptUtils.decrypt(SpUtils.getString(context, Constant.PHONE));
-        Cursor cursor = context.getContentResolver().query(SMS_URI, new String[]{"address", "body"}, "address = ?", new String[]{phone}, "date desc");
+        String selection = "read = 0 and address = " + phone + " date > " + (System.currentTimeMillis() - 10 * 60 * 1000);
+        Cursor cursor = context.getContentResolver().query(SMS_URI, new String[]{"address", "body"}, selection, null, "date desc limit 1");
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                String body = cursor.getString(1);
-                contact.setPhone(cursor.getString(0));
-                contact.setContent(body);
-                break;
+                bean.setPhone(cursor.getString(0));
+                bean.setContent(cursor.getString(1));
             }
             cursor.close();
         }
 
-        return contact;
+        return bean;
     }
 
     /**
@@ -49,18 +50,20 @@ public class ReadSmsEngine {
      * @param context
      * @return
      */
-    public static Set<ContactBean> getAllSms(Context context) {
-        Set<ContactBean> sets = new TreeSet<>();
-        ContactBean contact = new ContactBean();
-        Cursor cursor = context.getContentResolver().query(SMS_URI, new String[]{"address"}, null, null, null);
+    public static List<ContactBean> getAllSms(Context context) {
+        Map<String, ContactBean> map = new TreeMap<>();
+        Cursor cursor = context.getContentResolver().query(SMS_URI, new String[]{"address", "person"}, null, null, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
-                contact.setPhone(cursor.getString(0));
-                sets.add(contact);
+                ContactBean bean = new ContactBean();
+                String phone = cursor.getString(0);
+                bean.setPhone(phone);
+                bean.setName(cursor.getString(1));
+                map.put(phone, bean);
             }
             cursor.close();
         }
 
-        return sets;
+        return new ArrayList<>(map.values());
     }
 }

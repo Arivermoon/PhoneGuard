@@ -3,7 +3,7 @@ package com.self.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,9 +27,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.self.constant.Constant;
 import com.self.dao.BlackListDao;
 import com.self.domain.BlackListBean;
-import com.self.constant.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,25 +129,21 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
                 showPopupWindow();
                 break;
             case R.id.tv_popup_black_manual:
-                pw.dismiss();
-                pw = null;
+                closePopupWindow();
                 showDialog();
                 break;
             case R.id.tv_popup_black_contacts:
-                pw.dismiss();
-                pw = null;
+                closePopupWindow();
                 intent = new Intent(this, ContactActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.tv_popup_black_phonelog:
-                pw.dismiss();
-                pw = null;
+                closePopupWindow();
                 intent = new Intent(this, CallLogActivity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.tv_popup_black_smslog:
-                pw.dismiss();
-                pw = null;
+                closePopupWindow();
                 intent = new Intent(this, SmsLogActivity.class);
                 startActivityForResult(intent, 1);
                 break;
@@ -178,19 +174,19 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
                     //已经存在该号码，修改
                     blackListDao.update(bean);
                     beans.set(beans.indexOf(bean), bean);
+                    blackListAdapter.notifyDataSetChanged();
                 } else {
                     //不存在，新增
                     blackListDao.save(bean);
                     beans.add(bean);
+                    if (beans.size() == 1) {
+                        handler.obtainMessage(LOADED).sendToTarget();
+                    }
                 }
-                blackListAdapter.notifyDataSetChanged();
-
-                dialog.dismiss();
-                dialog = null;
+                closeDialog();
                 break;
             case R.id.bt_telsafe_cancel:
-                dialog.dismiss();
-                dialog = null;
+                closeDialog();
                 break;
         }
 
@@ -213,13 +209,20 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
         et_telsafe_blacknumber = (TextView) view.findViewById(R.id.et_telsafe_blacknumber);
         cb_telsafe_smsmode = (CheckBox) view.findViewById(R.id.cb_telsafe_smsmode);
         cb_telsafe_phonemode = (CheckBox) view.findViewById(R.id.cb_telsafe_phonemode);
-        Button bt_telsafee_add = (Button) view.findViewById(R.id.bt_telsafee_add);
-        Button bt_telsafe_cancel = (Button) view.findViewById(R.id.bt_telsafe_cancel);
+        Button btn_add = (Button) view.findViewById(R.id.bt_telsafee_add);
+        Button btn_cancel = (Button) view.findViewById(R.id.bt_telsafe_cancel);
         builder.setView(view);
         dialog = builder.create();
         dialog.show();
-        bt_telsafee_add.setOnClickListener(this);
-        bt_telsafe_cancel.setOnClickListener(this);
+        btn_add.setOnClickListener(this);
+        btn_cancel.setOnClickListener(this);
+    }
+
+    private void closeDialog() {
+        if (dialog != null && dialog.isShowing()) {
+            dialog.dismiss();
+            dialog = null;
+        }
     }
 
     private void showPopupWindow() {
@@ -235,11 +238,15 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
             tv_popup_black_smslog.setOnClickListener(this);
             pw = new PopupWindow(view, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             pw.setFocusable(true);
-            pw.setOutsideTouchable(true);
-            pw.update();
-            pw.setBackgroundDrawable(new BitmapDrawable());
+            pw.setBackgroundDrawable(new ColorDrawable());
             pw.showAtLocation(btn_add, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 0);
         } else {
+            closePopupWindow();
+        }
+    }
+
+    private void closePopupWindow() {
+        if (pw != null && pw.isShowing()) {
             pw.dismiss();
             pw = null;
         }
@@ -323,21 +330,14 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (pw != null && pw.isShowing()) {
-            pw.dismiss();
-            pw = null;
-        }
+        closePopupWindow();
         return super.onTouchEvent(event);
     }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (pw != null && pw.isShowing()) {
-                pw.dismiss();
-                pw = null;
-                return true;
-            }
+            closePopupWindow();
         }
         return super.onKeyDown(keyCode, event);
     }

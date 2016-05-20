@@ -9,6 +9,8 @@ import com.self.domain.ContactBean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by tanlang on 2016/5/10.
@@ -44,21 +46,21 @@ public class ReadContactsEngine {
      * @return
      */
     public static List<ContactBean> getCallLogs(Context context) {
+        Map<String, ContactBean> map = new TreeMap<>();
         Uri uri = Uri.parse("content://call_log/calls");
         Cursor cursor = context.getContentResolver().query(uri, new String[]{"number", "name"}, null, null, null);
-        List<ContactBean> lists = new ArrayList<>();
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 ContactBean bean = new ContactBean();
-                String phone = cursor.getString(0);//获取号码
-                String name = cursor.getString(1);//获取名字
+                String phone = cursor.getString(0).replaceAll(" ", "").replaceAll("17951", "").replaceAll("\\+86", "");
+                String name = cursor.getString(1);
                 bean.setName(name);
                 bean.setPhone(phone);
-                lists.add(bean);
+                map.put(phone, bean);
             }
+            cursor.close();
         }
 
-        return lists;
-
+        return new ArrayList<>(map.values());
     }
 }
