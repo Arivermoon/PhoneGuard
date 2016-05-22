@@ -20,11 +20,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_telsafe_phone"
         android:layout_margin="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="5dp"
         android:text="拦截模式"
         android:textColor="@android:color/holo_red_dark"
-        android:textSize="18sp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/iv_telsafe_delete"

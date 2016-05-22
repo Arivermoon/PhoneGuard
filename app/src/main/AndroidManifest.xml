@@ -34,9 +34,18 @@
         <activity android:name=".Setup2Activity" />
         <activity android:name=".Setup3Activity" />
         <activity android:name=".Setup4Activity" />
-        <activity android:name=".ContactActivity" />
-        <activity android:name=".SmsLogActivity" />
-        <activity android:name=".CallLogActivity" />
+        <activity
+            android:name=".ContactActivity"
+            android:label=""
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".SmsLogActivity"
+            android:label=""
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".CallLogActivity"
+            android:label=""
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".SettingCenterActivity"
             android:parentActivityName=".MainActivity" />

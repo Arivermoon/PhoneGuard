@@ -10,7 +10,6 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -126,7 +125,7 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
         Intent intent;
         switch (v.getId()) {
             case R.id.btn_addblack:
-                showPopupWindow();
+                showPopupWindow(1);
                 break;
             case R.id.tv_popup_black_manual:
                 closePopupWindow();
@@ -148,8 +147,8 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
                 startActivityForResult(intent, 1);
                 break;
             case R.id.bt_telsafee_add:
-                String phone = et_telsafe_blacknumber.getText().toString().trim();
-                if (TextUtils.isEmpty(phone)) {
+                String[] phones = et_telsafe_blacknumber.getText().toString().trim().split(",");
+                if (phones.length == 0) {
                     Toast.makeText(this, "手机号码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -167,26 +166,31 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
                 if (checked4phone) {
                     mode |= Constant.TEL;
                 }
-                BlackListBean bean = new BlackListBean();
-                bean.setPhone(phone);
-                bean.setMode(mode);
-                if (beans.contains(bean)) {
-                    //已经存在该号码，修改
-                    blackListDao.update(bean);
-                    beans.set(beans.indexOf(bean), bean);
-                    blackListAdapter.notifyDataSetChanged();
-                } else {
-                    //不存在，新增
-                    blackListDao.save(bean);
-                    beans.add(bean);
-                    if (beans.size() == 1) {
-                        handler.obtainMessage(LOADED).sendToTarget();
+                for (String phone : phones) {
+                    final BlackListBean bean = new BlackListBean();
+                    bean.setPhone(phone);
+                    bean.setMode(mode);
+                    if (beans.contains(bean)) {
+                        //已经存在该号码，修改
+                        blackListDao.update(bean);
+                        beans.set(beans.indexOf(bean), bean);
+                    } else {
+                        //不存在，新增
+                        blackListDao.save(bean);
+                        beans.add(bean);
                     }
                 }
+                if (beans.size() == 1) {
+                    handler.obtainMessage(LOADED).sendToTarget();
+                } else {
+                    blackListAdapter.notifyDataSetChanged();
+                }
                 closeDialog();
+                closePopupWindow();
                 break;
             case R.id.bt_telsafe_cancel:
                 closeDialog();
+                closePopupWindow();
                 break;
         }
 
@@ -196,8 +200,8 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            showDialog();
             if (resultCode == RESULT_OK) {
+                showPopupWindow(2);
                 et_telsafe_blacknumber.setText(data.getStringExtra(Constant.PHONE));
             }
         }
@@ -225,17 +229,29 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
         }
     }
 
-    private void showPopupWindow() {
+    private void showPopupWindow(int flag) {
         if (pw == null || !pw.isShowing()) {
-            View view = View.inflate(this, R.layout.popup_blacklist, null);
-            tv_popup_black_manual = (TextView) view.findViewById(R.id.tv_popup_black_manual);
-            tv_popup_black_contacts = (TextView) view.findViewById(R.id.tv_popup_black_contacts);
-            tv_popup_black_phonelog = (TextView) view.findViewById(R.id.tv_popup_black_phonelog);
-            tv_popup_black_smslog = (TextView) view.findViewById(R.id.tv_popup_black_smslog);
-            tv_popup_black_manual.setOnClickListener(this);
-            tv_popup_black_contacts.setOnClickListener(this);
-            tv_popup_black_phonelog.setOnClickListener(this);
-            tv_popup_black_smslog.setOnClickListener(this);
+            View view = null;
+            if (flag == 1) {
+                view = View.inflate(this, R.layout.popup_blacklist, null);
+                tv_popup_black_manual = (TextView) view.findViewById(R.id.tv_popup_black_manual);
+                tv_popup_black_contacts = (TextView) view.findViewById(R.id.tv_popup_black_contacts);
+                tv_popup_black_phonelog = (TextView) view.findViewById(R.id.tv_popup_black_phonelog);
+                tv_popup_black_smslog = (TextView) view.findViewById(R.id.tv_popup_black_smslog);
+                tv_popup_black_manual.setOnClickListener(this);
+                tv_popup_black_contacts.setOnClickListener(this);
+                tv_popup_black_phonelog.setOnClickListener(this);
+                tv_popup_black_smslog.setOnClickListener(this);
+            } else {
+                view = View.inflate(this, R.layout.dialog_blacklist, null);
+                et_telsafe_blacknumber = (TextView) view.findViewById(R.id.et_telsafe_blacknumber);
+                cb_telsafe_smsmode = (CheckBox) view.findViewById(R.id.cb_telsafe_smsmode);
+                cb_telsafe_phonemode = (CheckBox) view.findViewById(R.id.cb_telsafe_phonemode);
+                Button btn_add = (Button) view.findViewById(R.id.bt_telsafee_add);
+                Button btn_cancel = (Button) view.findViewById(R.id.bt_telsafe_cancel);
+                btn_add.setOnClickListener(this);
+                btn_cancel.setOnClickListener(this);
+            }
             pw = new PopupWindow(view, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             pw.setFocusable(true);
             pw.setBackgroundDrawable(new ColorDrawable());
