@@ -32,7 +32,6 @@
             android:layout_height="wrap_content"
             android:fastScrollEnabled="true"
             android:scrollbars="vertical"
-            android:clickable="false"
             android:visibility="gone"></ListView>
 
         <TextView

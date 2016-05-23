@@ -54,6 +54,7 @@
             android:parentActivityName=".MainActivity" />
 
         <service android:name="com.self.service.LostFindService" />
+        <service android:name="com.self.service.BlackListService" />
 
         <receiver android:name="com.self.receiver.BootReceiver">
             <intent-filter>

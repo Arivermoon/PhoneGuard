@@ -12,6 +12,7 @@ public class Constant {
     public static final String SETTED = "setted";
     public static final String AUTO_UPDATE = "autoupdate";
     public static final String BLACKLIST = "blacklist";
+    public static final String TEL_SAFE = "telsafe";
     public static final int SMS = 1;
     public static final int TEL = 2;
     public static final int ALL = SMS | TEL;

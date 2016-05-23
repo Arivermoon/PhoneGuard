@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="65dp"
-    android:clickable="false"
-    android:descendantFocusability="blocksDescendants">
+    android:background="#FFFFFF">
 
     <TextView
         android:id="@+id/tv_telsafe_phone"
@@ -34,4 +33,9 @@
         android:clickable="true"
         android:src="@drawable/iv_delete_selector" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/list_devider" />
 </RelativeLayout>

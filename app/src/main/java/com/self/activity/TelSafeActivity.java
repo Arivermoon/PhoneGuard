@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -147,8 +148,9 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
                 startActivityForResult(intent, 1);
                 break;
             case R.id.bt_telsafee_add:
-                String[] phones = et_telsafe_blacknumber.getText().toString().trim().split(",");
-                if (phones.length == 0) {
+                String phonenum = et_telsafe_blacknumber.getText().toString().trim();
+                String[] phones = phonenum.split(",");
+                if (TextUtils.isEmpty(phonenum) || phones.length == 0) {
                     Toast.makeText(this, "手机号码不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -231,7 +233,7 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
 
     private void showPopupWindow(int flag) {
         if (pw == null || !pw.isShowing()) {
-            View view = null;
+            View view;
             if (flag == 1) {
                 view = View.inflate(this, R.layout.popup_blacklist, null);
                 tv_popup_black_manual = (TextView) view.findViewById(R.id.tv_popup_black_manual);
@@ -269,6 +271,17 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
     }
 
     private class BlackListAdapter extends BaseAdapter {
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return false;
+        }
+
         @Override
         public int getCount() {
             return beans.size();

@@ -63,4 +63,9 @@ public class ReadContactsEngine {
 
         return new ArrayList<>(map.values());
     }
+
+    public static void deleteCalllog(Context context, String phone) {
+        Uri uri = Uri.parse("content://call_log/calls");
+        context.getContentResolver().delete(uri, "number = ?", new String[]{phone});
+    }
 }

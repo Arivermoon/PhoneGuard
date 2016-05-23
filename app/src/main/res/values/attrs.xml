@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="SettingCenterItem">
+    <declare-styleable name="SettingCenterItemView">
         <attr name="mTitle" format="string" />
         <attr name="mContent" format="string" />
-        <attr name="mOrder" format="integer" />
     </declare-styleable>
 </resources>

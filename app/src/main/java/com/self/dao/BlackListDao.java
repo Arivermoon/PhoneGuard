@@ -61,4 +61,20 @@ public class BlackListDao {
         db.close();
         return lists;
     }
+
+    public BlackListBean findByPhone(String phone) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("blacklist", new String[]{"phone", "mode"}, "phone = ?", new String[]{phone}, null, null, null);
+        BlackListBean bean = null;
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                bean = new BlackListBean();
+                bean.setPhone(cursor.getString(0));
+                bean.setMode(cursor.getInt(1));
+            }
+            cursor.close();
+        }
+        db.close();
+        return bean;
+    }
 }

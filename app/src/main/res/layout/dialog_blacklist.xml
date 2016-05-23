@@ -6,9 +6,12 @@
     android:orientation="vertical">
 
     <TextView
-        style="@style/tv_titleTheme"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:gravity="center"
         android:text="添加黑名单号码"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        android:textSize="24sp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -16,7 +19,8 @@
         android:layout_marginTop="20dp"
         android:inputType="text"
         android:text="确定要将这些号码加入黑名单吗？"
-        android:textColor="#000000" />
+        android:textColor="#000000"
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/et_telsafe_blacknumber"

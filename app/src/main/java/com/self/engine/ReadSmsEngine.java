@@ -45,6 +45,31 @@ public class ReadSmsEngine {
     }
 
     /**
+     * 根据新收到短信号码
+     * 用于监听短信
+     *
+     * @param context
+     * @return
+     */
+    public static ContactBean getLatestSms(Context context) {
+        ContactBean bean = new ContactBean();
+        Cursor cursor = context.getContentResolver().query(SMS_URI, new String[]{"address", "body"}, null, null, "date desc limit 1");
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                bean.setPhone(cursor.getString(0));
+                bean.setContent(cursor.getString(1));
+            }
+            cursor.close();
+        }
+
+        return bean;
+    }
+
+    public static void deleteSms(Context context, String phone) {
+        context.getContentResolver().delete(SMS_URI, "address = ?", new String[]{phone});
+    }
+
+    /**
      * 获取所有短信的号码
      *
      * @param context
