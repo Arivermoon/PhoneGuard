@@ -66,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, TelSafeActivity.class);
                         startActivity(intent);
                         break;
+                    case 7:
+                        intent = new Intent(MainActivity.this, ToolActivity.class);
+                        startActivity(intent);
+                        break;
                     case 8:
                         intent = new Intent(MainActivity.this, SettingCenterActivity.class);
                         startActivity(intent);

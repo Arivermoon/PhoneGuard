@@ -15,6 +15,6 @@
 ** limitations under the License.
 */
 
-package com.self.activity;
+package android.telephony;
 
 parcelable NeighboringCellInfo;

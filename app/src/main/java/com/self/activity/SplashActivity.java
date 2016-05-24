@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -38,7 +39,6 @@ public class SplashActivity extends AppCompatActivity {
     private static final int LOAD_UPLOAD_DIALOG = 2;
     private int versionCode;
     private TextView textView;
-    private ProgressBar progressBar;
     private VersionBean version;
     private long startTime;
 
@@ -49,12 +49,14 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
         textView = (TextView) findViewById(R.id.tv_splash_version);
-        progressBar = (ProgressBar) findViewById(R.id.pb_splash);
 
         initAnimation();
         initVersion();
         //checkVersion();
-        new Handler().postDelayed(new Runnable() {
+        //拷贝数据库
+        copyDB("address.db");
+
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 loadMain();
@@ -75,6 +77,41 @@ public class SplashActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void copyDB(final String dbName) {
+        new Thread() {
+            public void run() {
+                File file = new File("/data/data/com.self.activity/files/" + dbName);
+                if (file.exists()) {
+                    return;
+                }
+                try {
+                    copyFile(dbName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    private void copyFile(String dbName) throws IOException {
+        AssetManager assets = getAssets();
+        InputStream is = assets.open(dbName);
+        FileOutputStream fos = openFileOutput(dbName, MODE_PRIVATE);
+        byte[] buf = new byte[10240];
+        int len;
+        int count = 0;
+        while ((len = is.read()) != -1) {
+            fos.write(buf, 0, len);
+            if (count % 10 == 0) {
+                fos.flush();
+            }
+            count++;
+        }
+        fos.flush();
+        fos.close();
+        is.close();
+    }
 
     private void loadUploadDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
