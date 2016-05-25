@@ -12,24 +12,22 @@ import java.util.regex.Pattern;
  */
 public class PhoneHomeEngine {
 
-    public static final String PATH = "/data/data/com.self.activity/files/address.db";
-
-    public static String queryPhomeHome(String phoneNumber, Context context) {
-        String phomeHome;
+    public static String queryPhoneHome(String phoneNumber, Context context) {
+        String phoneHome;
         Pattern pattern = Pattern.compile("1[3578][0-9]{9}");
         Matcher matcher = pattern.matcher(phoneNumber);
         if (matcher.matches()) {
             // 是手机号
-            phomeHome = mobileQuery(phoneNumber, context);
+            phoneHome = mobileQuery(phoneNumber, context);
         } else if (phoneNumber.length() >= 11) {
             // 固定号码
-            phomeHome = phoneQuery(phoneNumber, context);
+            phoneHome = phoneQuery(phoneNumber, context);
         } else {
             // 如果是服务号码
-            phomeHome = serviceNumberQuery(phoneNumber);
+            phoneHome = serviceNumberQuery(phoneNumber);
         }
 
-        return phomeHome;
+        return phoneHome;
     }
 
     /**
@@ -55,7 +53,7 @@ public class PhoneHomeEngine {
      */
     public static String phoneQuery(String phoneNumber, Context context) {
         String result = phoneNumber;
-        SQLiteDatabase database = SQLiteDatabase.openDatabase(PATH, null, SQLiteDatabase.OPEN_READONLY);
+        SQLiteDatabase database = SQLiteDatabase.openDatabase(context.getFilesDir() + "/address.db", null, SQLiteDatabase.OPEN_READONLY);
         String code;
         if (phoneNumber.charAt(1) == '1' || phoneNumber.charAt(1) == '2') {
             // 2位区号
@@ -69,6 +67,7 @@ public class PhoneHomeEngine {
         if (cursor.moveToNext()) {
             result = cursor.getString(0);
         }
+        cursor.close();
         return result;
     }
 
@@ -79,12 +78,13 @@ public class PhoneHomeEngine {
      */
     public static String mobileQuery(String phoneNumber, Context context) {
         String result = phoneNumber;
-        SQLiteDatabase database = SQLiteDatabase.openDatabase(PATH, null, SQLiteDatabase.OPEN_READONLY);
+        SQLiteDatabase database = SQLiteDatabase.openDatabase(context.getFilesDir() + "/address.db", null, SQLiteDatabase.OPEN_READONLY);
         String sql = "select location from data2 where id = (select outKey from data1 where id = ?)";
         Cursor cursor = database.rawQuery(sql, new String[]{phoneNumber.substring(0, 7)});
         if (cursor.moveToNext()) {
             result = cursor.getString(0);
         }
+        cursor.close();
         return result;
     }
 }

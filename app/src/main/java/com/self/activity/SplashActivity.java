@@ -81,7 +81,7 @@ public class SplashActivity extends AppCompatActivity {
     private void copyDB(final String dbName) {
         new Thread() {
             public void run() {
-                File file = new File("/data/data/com.self.activity/files/" + dbName);
+                File file = new File(getFilesDir() + "/" + dbName);
                 if (file.exists()) {
                     return;
                 }
@@ -100,8 +100,8 @@ public class SplashActivity extends AppCompatActivity {
         FileOutputStream fos = openFileOutput(dbName, MODE_PRIVATE);
         byte[] buf = new byte[10240];
         int len;
-        int count = 0;
-        while ((len = is.read()) != -1) {
+        int count = 1;
+        while ((len = is.read(buf)) != -1) {
             fos.write(buf, 0, len);
             if (count % 10 == 0) {
                 fos.flush();

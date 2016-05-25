@@ -19,7 +19,7 @@ import com.self.engine.PhoneHomeEngine;
  * Created by tanlang on 2016/5/24.
  */
 public class PhoneHomeActivity extends AppCompatActivity {
-    
+
     private EditText et_phone;
     private Button btn_query;
     private TextView tv_phone_home;
@@ -41,7 +41,12 @@ public class PhoneHomeActivity extends AppCompatActivity {
     }
 
     private void initEvent() {
+
         et_phone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -49,21 +54,21 @@ public class PhoneHomeActivity extends AppCompatActivity {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
             public void afterTextChanged(Editable s) {
-                queryPhomeHome();
+                String phone = et_phone.getText().toString().trim();
+                if (TextUtils.isEmpty(phone)) {
+                    Animation shake = AnimationUtils.loadAnimation(PhoneHomeActivity.this, R.anim.shake);
+                    et_phone.startAnimation(shake);
+                    tv_phone_home.setText("归属地：");
+                    return;
+                }
             }
         });
-
         btn_query.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                queryPhomeHome();
+                queryPhoneHome();
             }
         });
     }
@@ -71,7 +76,7 @@ public class PhoneHomeActivity extends AppCompatActivity {
     /**
      * 归属地查询
      */
-    private void queryPhomeHome() {
+    private void queryPhoneHome() {
         String phone = et_phone.getText().toString().trim();
         if (TextUtils.isEmpty(phone)) {
             Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
@@ -80,8 +85,8 @@ public class PhoneHomeActivity extends AppCompatActivity {
             return;
         }
 
-        String phomeHome = PhoneHomeEngine.queryPhomeHome(phone, getApplicationContext());
-        tv_phone_home.setText("归属地：" + phomeHome);
+        String phoneHome = PhoneHomeEngine.queryPhoneHome(phone, PhoneHomeActivity.this);
+        tv_phone_home.setText("归属地：" + phoneHome);
     }
 
 }
