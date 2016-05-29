@@ -26,9 +26,51 @@
         app:mTitle="黑名单拦截设置"></com.self.view.SettingCenterItemView>
 
     <com.self.view.SettingCenterItemView
-        android:id="@+id/item_telsafe"
+        android:id="@+id/item_phone_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mContent="通讯卫士设置已经关闭-通讯卫士设置已经打开"
-        app:mTitle="通讯卫士设置设置"></com.self.view.SettingCenterItemView>
+        app:mContent="来电显示设置已经关闭-来电显示设置已经打开"
+        app:mTitle="来电显示设置"></com.self.view.SettingCenterItemView>
+
+    <RelativeLayout
+        android:id="@+id/item_phone_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item"
+        android:clickable="true">
+
+        <TextView
+            android:id="@+id/tv_phone_home_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="归属地显示风格"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/tv_phone_home_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_phone_home_title"
+            android:layout_margin="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="卫士蓝"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/iv_phone_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="18dp"
+            android:src="@drawable/iv_arrow_selector" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:layout_below="@id/tv_phone_home_content"
+            android:background="@drawable/list_devider" />
+    </RelativeLayout>
 </LinearLayout>

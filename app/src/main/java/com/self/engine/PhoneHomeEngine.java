@@ -53,7 +53,7 @@ public class PhoneHomeEngine {
      */
     public static String phoneQuery(String phoneNumber, Context context) {
         String result = phoneNumber;
-        SQLiteDatabase database = SQLiteDatabase.openDatabase(context.getFilesDir() + "/address.db", null, SQLiteDatabase.OPEN_READONLY);
+        SQLiteDatabase database = SQLiteDatabase.openDatabase(context.getFilesDir().getPath() + "/address.db", null, SQLiteDatabase.OPEN_READONLY);
         String code;
         if (phoneNumber.charAt(1) == '1' || phoneNumber.charAt(1) == '2') {
             // 2位区号
@@ -78,7 +78,7 @@ public class PhoneHomeEngine {
      */
     public static String mobileQuery(String phoneNumber, Context context) {
         String result = phoneNumber;
-        SQLiteDatabase database = SQLiteDatabase.openDatabase(context.getFilesDir() + "/address.db", null, SQLiteDatabase.OPEN_READONLY);
+        SQLiteDatabase database = SQLiteDatabase.openDatabase(context.getFilesDir().getPath() + "/address.db", null, SQLiteDatabase.OPEN_READONLY);
         String sql = "select location from data2 where id = (select outKey from data1 where id = ?)";
         Cursor cursor = database.rawQuery(sql, new String[]{phoneNumber.substring(0, 7)});
         if (cursor.moveToNext()) {

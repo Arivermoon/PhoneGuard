@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.self.activity.AppManagerActivity">
+
+    <TextView
+        style="@style/tv_titleTheme"
+        android:text="软件管家" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_appmanager_romsize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ROM可用空间:" />
+
+        <TextView
+            android:id="@+id/tv_appmanager_sdsize"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="SD可用空间:" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/lv_appmanager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fastScrollEnabled="true"
+            android:visibility="gone"></ListView>
+
+        <!--android:clickable="true"覆盖listview第一条数据的点击事件 -->
+        <TextView
+            android:id="@+id/tv_appmanager_lable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ff888888"
+            android:clickable="true"
+            android:text="个人软件(11)"
+            android:textColor="#ffffffff" />
+
+        <ProgressBar
+            android:id="@+id/pb_appmanager_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
+</LinearLayout>

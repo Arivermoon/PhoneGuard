@@ -14,7 +14,11 @@ public class Md5Utils {
             byte[] bytes = md5.digest(password.getBytes());
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < bytes.length; i++) {
-                sb.append(Integer.toHexString(bytes[i] & 0xFF));
+                int value = bytes[i] & 0xFF;
+                if (value < 16) {
+                    sb.append("0");
+                }
+                sb.append(Integer.toHexString(value));
             }
 
             return sb.toString();

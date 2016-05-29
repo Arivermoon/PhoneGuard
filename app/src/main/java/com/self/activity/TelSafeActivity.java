@@ -12,8 +12,6 @@ import android.support.v7.app.ActionBar.LayoutParams;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -357,17 +355,4 @@ public class TelSafeActivity extends AppCompatActivity implements OnClickListene
         ImageView deleteView;
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        closePopupWindow();
-        return super.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            closePopupWindow();
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }

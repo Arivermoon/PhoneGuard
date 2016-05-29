@@ -17,4 +17,8 @@ public class Constant {
     public static final int TEL = 2;
     public static final int ALL = SMS | TEL;
 
+    public static final String STYLEBGINDEX = "stylebgindex";
+
+    public static final int LOADING = 0;
+    public static final int LOADED = 1;
 }

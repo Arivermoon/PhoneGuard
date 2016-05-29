@@ -81,7 +81,7 @@ public class SplashActivity extends AppCompatActivity {
     private void copyDB(final String dbName) {
         new Thread() {
             public void run() {
-                File file = new File(getFilesDir() + "/" + dbName);
+                File file = new File(getFilesDir().getPath() + "/" + dbName);
                 if (file.exists()) {
                     return;
                 }
